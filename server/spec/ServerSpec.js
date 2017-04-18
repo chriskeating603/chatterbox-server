@@ -93,7 +93,7 @@ describe('Node Server Request Listener Function', function() {
 
     handler.requestHandler(req, res);
 
-    console.log('response is:', JSON.parse(res._data).results);
+    // console.log('response is:', JSON.parse(res._data).results);
     expect(res._responseCode).to.equal(200);
     var messages = JSON.parse(res._data).results;
     expect(messages.length).to.be.above(0);

@@ -68,21 +68,19 @@ var requestHandler = function(request, response) {
     'content-type': 'application/json',
     'results': messages
   };
-
-// console.log('request.url:', request.url)
 //test get request
   if (request.url === '/classes/messages') {
     if (request.method === 'OPTIONS') {
       response.writeHead(statusCode, headers);
-      response.end(JSON.stringify(obj));
+      response.end();
     } else if (request.method === 'GET') {
       response.writeHead(statusCode, headers);
       response.end(JSON.stringify(obj));
     } else if (request.method === 'POST') {
-      var messageObj = {username: request._postData.username, message: request._postData.message};
+      var messageObj = request._postData;
       messages.push(messageObj);
       response.writeHead(201, obj);
-      response.end(obj.statusCode);
+      response.end();
     } 
   } else {
     response.writeHead(404, headers);
