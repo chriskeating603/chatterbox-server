@@ -78,10 +78,10 @@ var requestHandler = function(request, response) {
       response.end(JSON.stringify(obj));
     } else if (request.method === 'POST') {
       request.on('data', function (data) {
-        messages.push(data);
+        response.writeHead(201, obj.headers);
+        messages.push(JSON.parse(data));
         response.end(JSON.stringify(obj));
       });
-      response.writeHead(201, obj.headers);
     } 
   } else {
     response.writeHead(404, headers);
