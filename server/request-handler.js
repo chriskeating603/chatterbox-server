@@ -63,7 +63,7 @@ var requestHandler = function(request, response) {
 
 
   var obj = {
-    'headers': headers,
+    // 'headers': headers,
     'statusCode': statusCode,
     'content-type': 'application/json',
     'results': messages
@@ -71,21 +71,23 @@ var requestHandler = function(request, response) {
 
   if (request.url === '/classes/messages') {
     if (request.method === 'OPTIONS') {
-      response.writeHead(statusCode, obj.headers);
+      response.writeHead(statusCode, headers);
       response.end();
     } else if (request.method === 'GET') {
-      response.writeHead(statusCode, obj.headers);
+      response.writeHead(statusCode, headers);
       response.end(JSON.stringify(obj));
     } else if (request.method === 'POST') {
-      var messageObj = request._postData;
-      messages.push(messageObj);
+      request.on('data', function (data) {
+        messages.push(data);
+        response.end(JSON.stringify(obj));
+      });
       response.writeHead(201, obj.headers);
-      response.end(JSON.stringify(obj));
     } 
   } else {
-    response.writeHead(404, obj.headers);
+    response.writeHead(404, headers);
     response.end();
   }
+
 
   // .writeHead() writes to the request line and headers of the response,
   // which includes the status and all headers.
