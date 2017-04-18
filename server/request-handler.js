@@ -68,22 +68,22 @@ var requestHandler = function(request, response) {
     'content-type': 'application/json',
     'results': messages
   };
-//test get request
+
   if (request.url === '/classes/messages') {
     if (request.method === 'OPTIONS') {
-      response.writeHead(statusCode, headers);
+      response.writeHead(statusCode, obj.headers);
       response.end();
     } else if (request.method === 'GET') {
-      response.writeHead(statusCode, headers);
+      response.writeHead(statusCode, obj.headers);
       response.end(JSON.stringify(obj));
     } else if (request.method === 'POST') {
       var messageObj = request._postData;
       messages.push(messageObj);
-      response.writeHead(201, obj);
-      response.end();
+      response.writeHead(201, obj.headers);
+      response.end(JSON.stringify(obj));
     } 
   } else {
-    response.writeHead(404, headers);
+    response.writeHead(404, obj.headers);
     response.end();
   }
 
@@ -98,7 +98,7 @@ var requestHandler = function(request, response) {
   //
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
-  response.end(JSON.stringify(obj));
+  // response.end(JSON.stringify(obj));
 };
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).
